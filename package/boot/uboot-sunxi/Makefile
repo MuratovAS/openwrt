@@ -334,6 +334,13 @@ define U-Boot/bananapi_m2_berry
   BUILD_DEVICES:=sinovoip_bananapi-m2-berry
 endef
 
+define U-Boot/licheepi_nano
+  BUILD_SUBTARGET:=arm9
+  NAME:=Lichee Pi Nano
+  BUILD_DEVICES:=suniv-f1c100s-licheepi-nano
+  UENV:=licheepi-nano
+endef
+
 UBOOT_TARGETS := \
 	a64-olinuxino \
 	a64-olinuxino-emmc \
@@ -380,7 +387,8 @@ UBOOT_TARGETS := \
 	pine64_plus \
 	sopine_baseboard \
 	orangepi_zero_plus \
-	libretech_all_h3_cc_h5
+	libretech_all_h3_cc_h5 \
+  licheepi_nano
 
 UBOOT_CONFIGURE_VARS += USE_PRIVATE_LIBGCC=yes
 
