@@ -1,0 +1,24 @@
+From 55dbbc66bba53cfecbf534855dbe39eb0b32c263 Mon Sep 17 00:00:00 2001
+From: Nick Matantsev <nick.matantsev@gmail.com>
+Date: Sun, 11 Jul 2021 02:00:02 -0400
+Subject: [PATCH 28/31] Add explicit bitops header include
+
+---
+ arch/arm/mach-sunxi/dram_suniv.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/mach-sunxi/dram_suniv.c b/arch/arm/mach-sunxi/dram_suniv.c
+index 40aebf6eba..457ddefa65 100644
+--- a/arch/arm/mach-sunxi/dram_suniv.c
++++ b/arch/arm/mach-sunxi/dram_suniv.c
+@@ -15,6 +15,7 @@
+ #include <asm/arch/clock.h>
+ #include <asm/arch/dram.h>
+ #include <asm/arch/gpio.h>
++#include <linux/bitops.h>
+ 
+ #define SDR_T_CAS			(0x2)
+ #define SDR_T_RAS			(0x8)
+-- 
+2.41.0
+

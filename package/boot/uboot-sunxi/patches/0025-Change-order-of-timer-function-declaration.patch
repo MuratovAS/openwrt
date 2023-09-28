@@ -1,0 +1,42 @@
+From 26039d7ab0b669befcca0700c010d81a866f0d06 Mon Sep 17 00:00:00 2001
+From: Nick Matantsev <nick.matantsev@gmail.com>
+Date: Sun, 21 Mar 2021 01:43:36 -0400
+Subject: [PATCH 25/31] Change order of timer function declaration
+
+---
+ arch/arm/cpu/arm926ejs/sunxi/timer.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/cpu/arm926ejs/sunxi/timer.c b/arch/arm/cpu/arm926ejs/sunxi/timer.c
+index 36263896d8..6375285fd2 100644
+--- a/arch/arm/cpu/arm926ejs/sunxi/timer.c
++++ b/arch/arm/cpu/arm926ejs/sunxi/timer.c
+@@ -55,12 +55,6 @@ int timer_init(void)
+ 	return 0;
+ }
+ 
+-/* timer without interrupts */
+-ulong get_timer(ulong base)
+-{
+-	return get_timer_masked() - base;
+-}
+-
+ ulong get_timer_masked(void)
+ {
+ 	/* current tick value */
+@@ -78,6 +72,12 @@ ulong get_timer_masked(void)
+ 	return gd->arch.tbl;
+ }
+ 
++/* timer without interrupts */
++ulong get_timer(ulong base)
++{
++	return get_timer_masked() - base;
++}
++
+ /* delay x useconds */
+ void __udelay(unsigned long usec)
+ {
+-- 
+2.41.0
+

@@ -1,0 +1,26 @@
+From 73422b329d3880659fd681af52ab23dce1c4d886 Mon Sep 17 00:00:00 2001
+From: Caize Wu <zepanwucai@gmail.com>
+Date: Wed, 19 Sep 2018 12:07:50 +0800
+Subject: [PATCH 24/31] Merge pull request #3 from jg1uaa/nano-v2018.01
+
+Nano v2018.01
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index b4f1cbcf9b..71051eb279 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1155,7 +1155,7 @@ endif
+ 	@# Check that this build does not use CONFIG options that we do not
+ 	@# know about unless they are in Kconfig. All the existing CONFIG
+ 	@# options are whitelisted, so new ones should not be added.
+-	$(call cmd,cfgcheck,u-boot.cfg)
++#	$(call cmd,cfgcheck,u-boot.cfg)
+ 
+ PHONY += dtbs
+ dtbs: dts/dt.dtb
+-- 
+2.41.0
+

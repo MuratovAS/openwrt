@@ -1,0 +1,26 @@
+From d00a70beb6569bed00a3f3f3c1a3afd069f45d1e Mon Sep 17 00:00:00 2001
+From: "S.J.R. van Schaik" <stephan@synkhronix.com>
+Date: Thu, 9 Feb 2017 21:11:14 +0000
+Subject: [PATCH 10/31] spl: sunxi: remove dependency on
+ CONFIG_SPL_SPI_FLASH_SUPPORT.
+
+---
+ drivers/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/Makefile b/drivers/Makefile
+index e371bc32bb..f468e1774b 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -63,6 +63,8 @@ obj-$(CONFIG_OMAP_USB_PHY) += usb/phy/
+ obj-$(CONFIG_SPL_SATA_SUPPORT) += ata/ scsi/
+ obj-$(CONFIG_HAVE_BLOCK_DEVICE) += block/
+ obj-$(CONFIG_SPL_THERMAL) += thermal/
++# commented out by @unframework for now (this is now included in mach-sunxi in mainline)
++# obj-$(CONFIG_SPL_SPI_SUNXI) += mtd/spi/sunxi_spi_spl.o
+ 
+ endif
+ endif
+-- 
+2.41.0
+

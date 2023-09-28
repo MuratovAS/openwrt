@@ -1,0 +1,111 @@
+From 1dfce10a19128050633b542d8b3fbec4596e6a34 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 19 Jan 2018 23:51:29 +0800
+Subject: [PATCH 09/31] sunxi: spi-spl: add support for SUNIV
+
+The suniv SoC come with a sun6i-style SPI controller at the base address
+of sun4i SPI controller. The module clock of the SPI controller is also
+missing.
+
+Add support for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/include/asm/arch-sunxi/gpio.h |  1 +
+ arch/arm/mach-sunxi/Kconfig            |  2 +-
+ arch/arm/mach-sunxi/spl_spi_sunxi.c    | 19 ++++++++++++++++++-
+ 3 files changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/gpio.h b/arch/arm/include/asm/arch-sunxi/gpio.h
+index d011d44d30..0e0389e608 100644
+--- a/arch/arm/include/asm/arch-sunxi/gpio.h
++++ b/arch/arm/include/asm/arch-sunxi/gpio.h
+@@ -170,6 +170,7 @@ enum sunxi_gpio_number {
+ #define SUNXI_GPC_NAND		2
+ #define SUNXI_GPC_SPI0		3
+ #define SUNXI_GPC_SDC2		3
++#define SUNIV_GPC_SPI0		2
+ #define SUN6I_GPC_SDC3		4
+ #define SUN50I_GPC_SPI0		4
+ 
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 6d11429130..32c1f2754e 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -1003,7 +1003,7 @@ config SPL_STACK_R_ADDR
+ 
+ config SPL_SPI_SUNXI
+ 	bool "Support for SPI Flash on Allwinner SoCs in SPL"
+-	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6
++	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_R40 || MACH_SUN50I_H6 || MACH_SUNIV
+ 	help
+ 	  Enable support for SPI Flash. This option allows SPL to read from
+ 	  sunxi SPI Flash. It uses the same method as the boot ROM, so does
+diff --git a/arch/arm/mach-sunxi/spl_spi_sunxi.c b/arch/arm/mach-sunxi/spl_spi_sunxi.c
+index 15e86cbac8..a59f0c13e1 100644
+--- a/arch/arm/mach-sunxi/spl_spi_sunxi.c
++++ b/arch/arm/mach-sunxi/spl_spi_sunxi.c
+@@ -89,6 +89,7 @@
+ 
+ #define SPI0_CLK_DIV_BY_2           0x1000
+ #define SPI0_CLK_DIV_BY_4           0x1001
++#define SPI0_CLK_DIV_BY_32          0x100f
+ 
+ /*****************************************************************************/
+ 
+@@ -131,7 +132,12 @@ static uintptr_t spi0_base_address(void)
+ 	if (IS_ENABLED(CONFIG_MACH_SUN50I_H6))
+ 		return 0x05010000;
+ 
+-	if (!is_sun6i_gen_spi())
++	/*
++	 * suniv comes with a sun6i-style SPI controller at the
++	 * sun4i SPI base address
++	 */
++	if (!is_sun6i_gen_spi() ||
++	    IS_ENABLED(CONFIG_MACH_SUNIV))
+ 		return 0x01C05000;
+ 
+ 	return 0x01C68000;
+@@ -155,11 +161,17 @@ static void spi0_enable_clock(void)
+ 	if (!IS_ENABLED(CONFIG_MACH_SUN50I_H6))
+ 		setbits_le32(CCM_AHB_GATING0, (1 << AHB_GATE_OFFSET_SPI0));
+ 
++#ifndef CONFIG_MACH_SUNIV
+ 	/* Divide by 4 */
+ 	writel(SPI0_CLK_DIV_BY_4, base + (is_sun6i_gen_spi() ?
+ 				  SUN6I_SPI0_CCTL : SUN4I_SPI0_CCTL));
+ 	/* 24MHz from OSC24M */
+ 	writel((1 << 31), CCM_SPI0_CLK);
++#else
++	/* Divide by 32, clock source is AHB clock 200MHz */
++	writel(SPI0_CLK_DIV_BY_32, IS_ENABLED(CONFIG_SUNXI_GEN_SUN6I) ?
++				  SUN6I_SPI0_CCTL : SUN4I_SPI0_CCTL);
++#endif
+ 
+ 	if (is_sun6i_gen_spi()) {
+ 		/* Enable SPI in the master mode and do a soft reset */
+@@ -189,8 +201,10 @@ static void spi0_disable_clock(void)
+ 		clrbits_le32(base + SUN4I_SPI0_CTL, SUN4I_CTL_MASTER |
+ 					     SUN4I_CTL_ENABLE);
+ 
++#ifndef CONFIG_MACH_SUNIV
+ 	/* Disable the SPI0 clock */
+ 	writel(0, CCM_SPI0_CLK);
++#endif
+ 
+ 	/* Close the SPI0 gate */
+ 	if (!IS_ENABLED(CONFIG_MACH_SUN50I_H6))
+@@ -212,6 +226,9 @@ static void spi0_init(void)
+ 	    IS_ENABLED(CONFIG_MACH_SUN50I_H6))
+ 		pin_function = SUN50I_GPC_SPI0;
+ 
++	if (IS_ENABLED(CONFIG_MACH_SUNIV))
++		pin_function = SUNIV_GPC_SPI0;
++
+ 	spi0_pinmux_setup(pin_function);
+ 	spi0_enable_clock();
+ }
+-- 
+2.41.0
+

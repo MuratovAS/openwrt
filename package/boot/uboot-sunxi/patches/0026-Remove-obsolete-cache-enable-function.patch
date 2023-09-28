@@ -1,0 +1,28 @@
+From f615950de7761ad5a2b91d1b42d4709729b7145d Mon Sep 17 00:00:00 2001
+From: Nick Matantsev <nick.matantsev@gmail.com>
+Date: Mon, 22 Mar 2021 23:07:32 -0400
+Subject: [PATCH 26/31] Remove obsolete cache enable function
+
+---
+ arch/arm/mach-sunxi/board.c | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/arch/arm/mach-sunxi/board.c b/arch/arm/mach-sunxi/board.c
+index 6e57a5c465..d97f16e230 100644
+--- a/arch/arm/mach-sunxi/board.c
++++ b/arch/arm/mach-sunxi/board.c
+@@ -373,11 +373,3 @@ void reset_cpu(ulong addr)
+ 	while (1) { }
+ #endif
+ }
+-
+-#if !CONFIG_IS_ENABLED(SYS_DCACHE_OFF) && !defined(CONFIG_ARM64)
+-void enable_caches(void)
+-{
+-	/* Enable D-cache. I-cache is already enabled in start.S */
+-	dcache_enable();
+-}
+-#endif
+-- 
+2.41.0
+

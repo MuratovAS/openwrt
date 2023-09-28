@@ -1,0 +1,44 @@
+From 92a2324ed0b409236d33354c46b9e9133c3c50bd Mon Sep 17 00:00:00 2001
+From: Nick Matantsev <nick.matantsev@gmail.com>
+Date: Sun, 11 Jul 2021 01:56:20 -0400
+Subject: [PATCH 27/31] Fix DTB compilation for Lichee Pi Nano due to newer
+ target setup
+
+---
+ arch/arm/dts/Makefile          | 2 ++
+ arch/arm/dts/sunxi-u-boot.dtsi | 3 +++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index fd47e408f8..8aa8bfab8b 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -450,6 +450,8 @@ dtb-$(CONFIG_STM32F7) += stm32f746-disco.dtb \
+ dtb-$(CONFIG_STM32H7) += stm32h743i-disco.dtb \
+ 	stm32h743i-eval.dtb
+ 
++dtb-$(CONFIG_MACH_SUNIV) += \
++	suniv-f1c100s-licheepi-nano.dtb
+ dtb-$(CONFIG_MACH_SUN4I) += \
+ 	sun4i-a10-a1000.dtb \
+ 	sun4i-a10-ba10-tvbox.dtb \
+diff --git a/arch/arm/dts/sunxi-u-boot.dtsi b/arch/arm/dts/sunxi-u-boot.dtsi
+index c77cf7cacf..7e59eaee11 100644
+--- a/arch/arm/dts/sunxi-u-boot.dtsi
++++ b/arch/arm/dts/sunxi-u-boot.dtsi
+@@ -9,9 +9,12 @@
+ #endif
+ 
+ / {
++	/* commented out by @unframework 2021-07 to make the Lichee Pi Nano compile to work */
++	/*
+ 	aliases {
+ 		mmc1 = &mmc2;
+ 	};
++	*/
+ 
+ 	binman: binman {
+ 		multiple-images;
+-- 
+2.41.0
+
