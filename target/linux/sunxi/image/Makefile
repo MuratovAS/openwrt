@@ -18,7 +18,8 @@ define Build/sunxi-sdcard
 
 	mcopy -i $@.boot $(STAGING_DIR_IMAGE)/$(DEVICE_NAME)-boot.scr ::boot.scr
 	mcopy -i $@.boot $(DTS_DIR)/$(SUNXI_DTS).dtb ::dtb
-	mcopy -i $@.boot $(IMAGE_KERNEL) ::uImage
+	$(if $(KERNEL_COMPRESS), mcopy -i $@.boot $(KDIR)/zImage ::zImage, \
+		mcopy -i $@.boot $(IMAGE_KERNEL) ::uImage)
 	./gen_sunxi_sdcard_img.sh $@ \
 		$@.boot \
 		$(IMAGE_ROOTFS) \

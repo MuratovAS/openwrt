@@ -6,9 +6,9 @@ include $(TOPDIR)/rules.mk
 
 ARCH:=arm
 BOARD:=sunxi
-BOARDNAME:=Allwinner A1x/A20/A3x/H3/H5/R40
+BOARDNAME:=Allwinner A1x/A20/A3x/H3/H5/R40/F1C100s
 FEATURES:=fpu usb ext4 display rootfs-part rtc squashfs
-SUBTARGETS:=cortexa8 cortexa7 cortexa53
+SUBTARGETS:=cortexa8 cortexa7 cortexa53 arm9
 
 KERNEL_PATCHVER:=5.15
 
@@ -21,6 +21,7 @@ KERNELNAME:=zImage dtbs
 # A80: octa Cortex-A15/A7
 # H3: quad Cortex-A7
 # R40: quad Cortex-A7
+# F1C100s: ARM 926EJS
 
 include $(INCLUDE_DIR)/target.mk
 
