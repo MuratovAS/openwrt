@@ -1,3 +1,31 @@
+## Fork
+
+Build:
+```
+cp .config-example .config
+./scripts/feeds update -a && ./scripts/feeds install -a
+make defconfig
+make world
+make kernel_menuconfig
+make menuconfig
+make -j8 V=s  
+```
+
+Note:
+```
+git format-patch -1 #create patch
+git apply *.patch #apply patch
+```
+
+```
+ethtool -i eth0 #driver info
+```
+
+Credit:
+```
+https://openwrt.org/docs/guide-user/additional-software/saving_space
+```
+
 ![OpenWrt logo](include/logo.png)
 
 OpenWrt Project is a Linux operating system targeting embedded devices. Instead
