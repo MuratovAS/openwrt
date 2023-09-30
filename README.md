@@ -24,6 +24,8 @@ ethtool -i eth0 #driver info
 Credit:
 ```
 https://openwrt.org/docs/guide-user/additional-software/saving_space
+https://github.com/HandsomeMod/HandsomeMod/blob/fa7f0be51858a64e0d5f9e1f1a3c6bdb137c3eba/target/linux/sunxi/patches-5.4/446-suniv-devicetree-fix.patch#L218
+https://linux-sunxi.org/SPIdev
 ```
 
 ![OpenWrt logo](include/logo.png)

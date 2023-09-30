@@ -1,15 +1,15 @@
-From 5fb0d21479962159e32c425f666a89eefed37b11 Mon Sep 17 00:00:00 2001
+From a9297e0b9e8237ee4148facc2a503781f1480f98 Mon Sep 17 00:00:00 2001
 From: MuratovAS <lexamzx@gmail.com>
-Date: Fri, 29 Sep 2023 19:01:22 +0500
+Date: Sat, 30 Sep 2023 03:05:57 +0500
 Subject: [PATCH] init dts and dtsi for f1c100s
 
 ---
- .../boot/dts/suniv-f1c100s-licheepi-nano.dts  |  53 +++++++
- arch/arm/boot/dts/suniv-f1c100s.dtsi          | 146 ++++++++++++++++--
- 2 files changed, 188 insertions(+), 11 deletions(-)
+ .../boot/dts/suniv-f1c100s-licheepi-nano.dts  |  63 +++++++
+ arch/arm/boot/dts/suniv-f1c100s.dtsi          | 161 ++++++++++++++++--
+ 2 files changed, 213 insertions(+), 11 deletions(-)
 
 diff --git a/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts b/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
-index a1154e6c7cb5..b66f3c58dc21 100644
+index a1154e6c7cb5..a2759cdc7c64 100644
 --- a/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
 +++ b/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
 @@ -5,6 +5,12 @@
@@ -25,7 +25,13 @@ index a1154e6c7cb5..b66f3c58dc21 100644
  
  / {
  	model = "Lichee Pi Nano";
-@@ -17,6 +23,32 @@ aliases {
+@@ -12,11 +18,43 @@ / {
+ 
+ 	aliases {
+ 		serial0 = &uart0;
++		spi0 = &spi0;
+ 	};
+ 
  	chosen {
  		stdout-path = "serial0:115200n8";
  	};
@@ -53,12 +59,17 @@ index a1154e6c7cb5..b66f3c58dc21 100644
 +
 +&spi0 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&spi0_pins_a>;
++	pinctrl-0 = <&spi0_pc_pins>;
 +	status = "okay";
++	spidev@0x00 {
++		compatible = "spidev";
++		spi-max-frequency = <1200000>;
++		reg = <0>;
++	};
  };
  
  &uart0 {
-@@ -24,3 +56,24 @@ &uart0 {
+@@ -24,3 +62,28 @@ &uart0 {
  	pinctrl-0 = <&uart0_pe_pins>;
  	status = "okay";
  };
@@ -68,6 +79,10 @@ index a1154e6c7cb5..b66f3c58dc21 100644
 +        pins = "PE9";
 +        function = "gpio_out";
 +    };
++};
++
++&dma {
++        status = "okay";
 +};
 +
 +&otg_sram {
@@ -84,7 +99,7 @@ index a1154e6c7cb5..b66f3c58dc21 100644
 +	status = "okay";
 +};
 diff --git a/arch/arm/boot/dts/suniv-f1c100s.dtsi b/arch/arm/boot/dts/suniv-f1c100s.dtsi
-index def830101448..5f70aeebd6b1 100644
+index def830101448..0d2f834fef5c 100644
 --- a/arch/arm/boot/dts/suniv-f1c100s.dtsi
 +++ b/arch/arm/boot/dts/suniv-f1c100s.dtsi
 @@ -4,6 +4,10 @@
@@ -107,7 +122,7 @@ index def830101448..5f70aeebd6b1 100644
  	soc {
  		compatible = "simple-bus";
  		#address-cells = <1>;
-@@ -62,6 +66,32 @@ otg_sram: sram-section@0 {
+@@ -62,6 +66,36 @@ otg_sram: sram-section@0 {
  			};
  		};
  
@@ -118,6 +133,8 @@ index def830101448..5f70aeebd6b1 100644
 +			interrupts = <10>;
 +			clocks = <&ccu CLK_BUS_SPI0>, <&ccu CLK_BUS_SPI0>;
 +			clock-names = "ahb", "mod";
++			dmas = <&dma 4>, <&dma 4>;
++			dma-names = "rx", "tx";
 +			resets = <&ccu RST_BUS_SPI0>;
 +			status = "disabled";
 +			#address-cells = <1>;
@@ -131,6 +148,8 @@ index def830101448..5f70aeebd6b1 100644
 +			interrupts = <11>;
 +			clocks = <&ccu CLK_BUS_SPI1>, <&ccu CLK_BUS_SPI1>;
 +			clock-names = "ahb", "mod";
++			dmas = <&dma 5>, <&dma 5>;
++			dma-names = "rx", "tx";
 +			resets = <&ccu RST_BUS_SPI1>;
 +			status = "disabled";
 +			#address-cells = <1>;
@@ -140,7 +159,7 @@ index def830101448..5f70aeebd6b1 100644
  		ccu: clock@1c20000 {
  			compatible = "allwinner,suniv-f1c100s-ccu";
  			reg = <0x01c20000 0x400>;
-@@ -71,6 +101,19 @@ ccu: clock@1c20000 {
+@@ -71,6 +105,19 @@ ccu: clock@1c20000 {
  			#reset-cells = <1>;
  		};
  
@@ -160,7 +179,7 @@ index def830101448..5f70aeebd6b1 100644
  		intc: interrupt-controller@1c20400 {
  			compatible = "allwinner,suniv-f1c100s-ic";
  			reg = <0x01c20400 0x400>;
-@@ -82,17 +125,32 @@ pio: pinctrl@1c20800 {
+@@ -82,19 +129,45 @@ pio: pinctrl@1c20800 {
  			compatible = "allwinner,suniv-f1c100s-pinctrl";
  			reg = <0x01c20800 0x400>;
  			interrupts = <38>, <39>, <40>;
@@ -187,14 +206,27 @@ index def830101448..5f70aeebd6b1 100644
 +				function = "mmc0";
 +			};
 +
-+			spi0_pins_a: spi0-pins-pc {
++			spi0_pc_pins: spi0-pc-pins {
 +				pins = "PC0", "PC1", "PC2", "PC3";
 +				function = "spi0";
 +			};
  		};
  
++        dma: dma-controller@1c02000 {
++                compatible = "allwinner,suniv-f1c100s-dma";
++                reg = <0x01c02000 0x1000>;
++                interrupts = <18>;
++                clocks  = <&ccu CLK_BUS_DMA>;
++                //clock-names = "ahb", "mod";
++                resets = <&ccu RST_BUS_DMA>;
++                status = "disabled";
++                #dma-cells = <1>;
++        };
++
  		timer@1c20c00 {
-@@ -102,12 +160,52 @@ timer@1c20c00 {
+ 			compatible = "allwinner,suniv-f1c100s-timer";
+ 			reg = <0x01c20c00 0x90>;
+@@ -102,12 +175,52 @@ timer@1c20c00 {
  			clocks = <&osc24M>;
  		};
  
@@ -250,7 +282,7 @@ index def830101448..5f70aeebd6b1 100644
  		};
  
  		uart0: serial@1c25000 {
-@@ -116,8 +214,8 @@ uart0: serial@1c25000 {
+@@ -116,8 +229,8 @@ uart0: serial@1c25000 {
  			interrupts = <1>;
  			reg-shift = <2>;
  			reg-io-width = <4>;
@@ -261,7 +293,7 @@ index def830101448..5f70aeebd6b1 100644
  			status = "disabled";
  		};
  
-@@ -127,8 +225,8 @@ uart1: serial@1c25400 {
+@@ -127,8 +240,8 @@ uart1: serial@1c25400 {
  			interrupts = <2>;
  			reg-shift = <2>;
  			reg-io-width = <4>;
@@ -272,7 +304,7 @@ index def830101448..5f70aeebd6b1 100644
  			status = "disabled";
  		};
  
-@@ -138,8 +236,34 @@ uart2: serial@1c25800 {
+@@ -138,8 +251,34 @@ uart2: serial@1c25800 {
  			interrupts = <3>;
  			reg-shift = <2>;
  			reg-io-width = <4>;
