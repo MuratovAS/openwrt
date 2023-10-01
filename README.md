@@ -23,32 +23,45 @@ ethtool -i eth0 #driver info
 
 Credit:
 ```
-https://openwrt.org/docs/guide-user/additional-software/saving_space
-https://github.com/matrixant/f1c200s_core
-https://github.com/R4ynor/f1c200s
-https://github.com/linyuxuanlin/Flip
-https://github.com/xddcore/Zero_Linux_Board
-https://github.com/embeddedboys/HamsterBear
-https://github.com/YuzukiHD/YuzukiMavericks
-https://github.com/mangopi-sbc/aw-doc
-https://github.com/nminaylov/F1C100s_info
+High quality:
+https://linux-sunxi.org/Lctech_Pi_F1C200s // ch340e
 https://github.com/peng-zhihui/Planck-Pi
-https://github.com/minilogic/f1c_dbc
+https://github.com/virtualwiz/NEKO-M5 // eth sr9900
+https://github.com/xddcore/Zero_Linux_Board // software+hardware
+https://github.com/voloviq/licheepinano_sarau270_lcd // lan9614 + lte + gps
+https://github.com/mahdi2001h/SINUX_F1 // wifi
+https://github.com/embeddedboys/HamsterBear // mpcie-module
+
+Medium quality:
+https://github.com/matrixant/f1c200s_core // mpcie-module
+https://github.com/linyuxuanlin/Flip // cp2102; altium
+https://www.cnblogs.com/twzy/p/14714651.html // ch340e; Separate power sources
+https://github.com/YuzukiHD/YuzukiMavericks // audio
+https://github.com/minilogic/f1c_dbc // hdmi + docs
+https://github.com/kmakise/F1C100S_DB_R1 
+https://github.com/VeiLiang/BoloPi_PCB
+
+Low quality:
+https://github.com/R4ynor/f1c200s
 https://github.com/matiko122/F1C100sDevBoard
 https://github.com/serhaturtis/ES-SOM_F1C
 https://github.com/JohnSanpe/neopi-nano
-https://github.com/virtualwiz/NEKO-M5
-https://github.com/mahdi2001h/SINUX_F1
-https://github.com/kmakise/F1C100S_DB_R1
-https://github.com/VeiLiang/BoloPi_PCB
-https://github.com/voloviq/licheepinano_sarau270_lcd
-https://linux-sunxi.org/Lctech_Pi_F1C200s
-https://github.com/peng-zhihui/Planck-Pi
 
-http://dl.sipeed.com/shareURL/LICHEE/Nano
-https://github.com/wuxx/f1c100s-gpio-tools
+Docs:
+https://github.com/uYanki/allwinner-chip-doc
+https://github.com/mangopi-sbc/aw-doc
+https://github.com/nminaylov/F1C100s_info
 https://github.com/nminaylov/F1C100s_projects
+https://programmerall.com/article/55812199675/
 
+Useful software solutions:
+https://openwrt.org/docs/guide-user/additional-software/saving_space // zram
+http://dl.sipeed.com/shareURL/LICHEE/Nano // hdk + sdk
+https://github.com/wuxx/f1c100s-gpio-tools
+https://wiki.kobol.io/helios4/i2c/
+https://github.com/NateLol/luci-app-oled
+
+Build:
 https://github.com/spidermanstruation/licheepi-nano-buildroot
 https://github.com/unframework/lichee-kiosk
 https://github.com/suda-morris/suda-f1c100s
@@ -60,17 +73,6 @@ https://github.com/nand2mario/licheepi-nano-buildroot
 https://github.com/unframework/licheepi-nano-buildroot
 https://github.com/aodzip/buildroot-tiny200
 https://github.com/TriForceX/MiyooCFW
-
-https://github.com/uYanki/allwinner-chip-doc
-
-https://programmerall.com/article/55812199675/
-
-https://github.com/NateLol/luci-app-oled
-https://wiki.kobol.io/helios4/i2c/
-
-https://novi.kupujemprodajem.com/elektronika-i-komponente/moduli-za-samoizgradnju/mcp2515-can-bus-module-arduino/oglas/147840983?filterId=3912162720
-
-
 https://github.com/HandsomeMod/HandsomeMod/blob/fa7f0be51858a64e0d5f9e1f1a3c6bdb137c3eba/target/linux/sunxi/patches-5.4/442-suniv-Add-DMA-Controller.patch
 https://github.com/jockm/lichee-nano-one-key-package/blob/ebcad700aa613f22d67c9a49e5cef72f2cee4d0a/linux-suniv-f1c100s.dtsi#L262
 https://github.com/jockm/lichee-nano-one-key-package/blob/master/linux-licheepi_nano_defconfig
